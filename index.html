@@ -61,13 +61,13 @@
             overflow: hidden;
         }
 
-        /* 將 iframe 向上推 -50px 徹底剪裁掉頂部黑色區域 */
+        /* 將 iframe 強制向上向上偏移 -65px，徹底裁剪頂部黑條 */
         .canva-wrapper iframe {
             position: absolute;
-            top: -50px;
+            top: -65px !important;
             left: 0;
             width: 100%;
-            height: calc(100% + 100px);
+            height: calc(100% + 120px) !important;
             border: none;
         }
 
@@ -130,7 +130,7 @@
     <!-- 隱藏式 Iframe，用於接收 Google Form 提交結果 -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeLoad()"></iframe>
 
-    <!-- 1. 頂部滿版 Canva 區域 (上下黑邊皆已精準裁切) -->
+    <!-- 1. 頂部滿版 Canva 區域 (黑邊已精準裁切) -->
     <section class="w-full relative bg-cream">
         <div class="canva-wrapper">
             <iframe loading="lazy"
@@ -187,11 +187,11 @@
                     </label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" id="attend_yes" name="entry.2112564173" value="當然，一定到!" required onclick="toggleAttendanceMode('attend')" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
+                            <input type="radio" id="attend_yes" name="entry.2112564173" value="當然，一定到!" required onchange="toggleAttendanceMode('attend')" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
                             <span class="ml-3 radio-text text-stone-700">當然，一定到!</span>
                         </label>
                         <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" id="attend_no" name="entry.2112564173" value="無法出席，但獻上祝福" required onclick="toggleAttendanceMode('absent')" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
+                            <input type="radio" id="attend_no" name="entry.2112564173" value="無法出席，但獻上祝福" required onchange="toggleAttendanceMode('absent')" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
                             <span class="ml-3 radio-text text-stone-700">無法出席，但獻上祝福</span>
                         </label>
                     </div>

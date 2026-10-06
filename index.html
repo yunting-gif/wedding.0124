@@ -52,6 +52,7 @@
             overflow-x: hidden;
         }
 
+        /* 滿版外層容器 */
         .canva-wrapper {
             position: relative;
             width: 100%;
@@ -60,28 +61,17 @@
             overflow: hidden;
         }
 
+        /* 將 iframe 向上推 -50px 徹底剪裁掉頂部黑色區域 */
         .canva-wrapper iframe {
             position: absolute;
-            top: 0;
+            top: -50px;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: calc(100% + 100px);
             border: none;
         }
 
-        /* 頂部奶油色遮罩：徹底蓋住最上方的黑邊 */
-        .canva-top-cover {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 45px;
-            background-color: #FDFAF6;
-            z-index: 10;
-            pointer-events: none;
-        }
-
-        /* 底部奶油色遮罩：徹底蓋住最下方的黑邊 */
+        /* 底部奶油色遮罩蓋住底欄黑條 */
         .canva-bottom-cover {
             position: absolute;
             bottom: 0;
@@ -100,7 +90,7 @@
             box-shadow: 0 20px 40px rgba(181, 148, 106, 0.08);
         }
 
-        /* 強制放大表單字體與輸入框 */
+        /* 放大表單標籤與輸入字體 */
         .custom-label {
             font-size: 1.15rem !important;
             font-weight: 500 !important;
@@ -140,17 +130,14 @@
     <!-- 隱藏式 Iframe，用於接收 Google Form 提交結果 -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeLoad()"></iframe>
 
-    <!-- 1. 頂部滿版 Canva 區域 (上下均有奶油色遮罩遮蓋黑邊) -->
+    <!-- 1. 頂部滿版 Canva 區域 (上下黑邊皆已精準裁切) -->
     <section class="w-full relative bg-cream">
         <div class="canva-wrapper">
-            <!-- 頂部遮罩 -->
-            <div class="canva-top-cover"></div>
             <iframe loading="lazy"
                 src="https://www.canva.com/design/DAHWBKwxk5o/NzhCkC-29eXAi5pwUNmehg/view?embed" 
                 allowfullscreen="allowfullscreen" 
                 allow="fullscreen">
             </iframe>
-            <!-- 底部遮罩 -->
             <div class="canva-bottom-cover"></div>
         </div>
     </section>
@@ -200,11 +187,11 @@
                     </label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" name="entry.2112564173" value="當然，一定到!" required onchange="toggleAttendanceMode('attend')" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
+                            <input type="radio" id="attend_yes" name="entry.2112564173" value="當然，一定到!" required onclick="toggleAttendanceMode('attend')" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
                             <span class="ml-3 radio-text text-stone-700">當然，一定到!</span>
                         </label>
                         <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" name="entry.2112564173" value="無法出席，但獻上祝福" required onchange="toggleAttendanceMode('absent')" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
+                            <input type="radio" id="attend_no" name="entry.2112564173" value="無法出席，但獻上祝福" required onclick="toggleAttendanceMode('absent')" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
                             <span class="ml-3 radio-text text-stone-700">無法出席，但獻上祝福</span>
                         </label>
                     </div>
@@ -304,4 +291,213 @@
                             <span class="ml-3 radio-text text-stone-700">需要，電子跟紙本都想要</span>
                         </label>
                         <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <
+                            <input type="radio" name="entry.471589357" value="需要，請寄電子喜帖給我" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-3 radio-text text-stone-700">需要，請寄電子喜帖給我</span>
+                        </label>
+                        <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
+                            <input type="radio" name="entry.471589357" value="需要，請寄紙本喜帖給我" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-3 radio-text text-stone-700">需要，請寄紙本喜帖給我</span>
+                        </label>
+                        <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
+                            <input type="radio" name="entry.471589357" value="不用，我已經記起來婚禮資訊了" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-3 radio-text text-stone-700">不用，我已經記起來婚禮資訊了</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 10. 地址與祝福留言 (選擇意願後顯示) -->
+                <div id="blessingBlock" style="display: none;">
+                    <label class="block custom-label text-darkburgundy mb-2" id="blessingLabel">
+                        寄送地址 / 給新人的祝福與備註
+                    </label>
+                    <textarea id="entry_380847305"
+                              name="entry.380847305" 
+                              rows="3" 
+                              placeholder="若需要紙本喜帖請附上郵遞區號與地址，也歡迎寫下給我們的祝福..." 
+                              class="custom-input"></textarea>
+                </div>
+
+                <!-- 提交按鈕 -->
+                <div class="text-center pt-4">
+                    <button type="submit" 
+                            id="submitBtn" 
+                            class="w-full md:w-auto px-12 py-4 bg-champagne-500 hover:bg-champagne-600 text-white font-medium text-xl rounded-full shadow-lg hover:shadow-xl transition-all tracking-widest flex items-center justify-center mx-auto">
+                        <span id="btnText">確認送出資料</span>
+                        <div id="btnSpinner" class="hidden ml-2 w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="py-8 text-center text-sm text-stone-400 mt-10">
+        <p>© Wedding Invitation & RSVP Form. All Rights Reserved.</p>
+    </footer>
+
+    <!-- 成功提交彈出視窗 (Modal) -->
+    <div id="successModal" class="fixed inset-0 bg-darkburgundy/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="glass-card bg-cream p-8 md:p-10 rounded-3xl max-w-md w-full text-center shadow-2xl border border-champagne-300 transform transition-all scale-95 opacity-0 duration-300" id="modalContent">
+            <div class="w-16 h-16 bg-champagne-100 text-champagne-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
+                <i class="fa-solid fa-heart"></i>
+            </div>
+            <h3 class="text-2xl font-normal text-darkburgundy mb-2 tracking-wider">感謝您的回覆！</h3>
+            <p class="text-stone-600 text-base leading-relaxed mb-6 font-light">
+                我們已經成功收到您的資訊。<br>非常感謝您的祝福與配合！
+            </p>
+            <button onclick="closeModal()" class="px-8 py-2.5 bg-champagne-500 hover:bg-champagne-600 text-white rounded-full text-sm tracking-widest shadow transition-all">
+                關閉視窗
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function toggleAttendanceMode(mode) {
+            const relationshipBlock = document.getElementById('relationshipBlock');
+            const contactBlock = document.getElementById('contactBlock');
+            const attendanceDetailsBlock = document.getElementById('attendanceDetailsBlock');
+            const invitationBlock = document.getElementById('invitationBlock');
+            const blessingBlock = document.getElementById('blessingBlock');
+            
+            const relationshipSelect = document.getElementById('entry_383311355');
+            const phoneInput = document.getElementById('entry_1185979561');
+            const invitationRadios = document.querySelectorAll('input[name="entry.471589357"]');
+            const blessingArea = document.getElementById('entry_380847305');
+            const blessingLabel = document.getElementById('blessingLabel');
+
+            blessingBlock.style.display = 'block';
+
+            if (mode === 'attend') {
+                relationshipBlock.style.display = 'block';
+                contactBlock.style.display = 'grid';
+                attendanceDetailsBlock.style.display = 'grid';
+                invitationBlock.style.display = 'block';
+
+                relationshipSelect.required = true;
+                phoneInput.required = true;
+                invitationRadios.forEach(r => r.required = true);
+
+                blessingLabel.innerText = '寄送地址 / 給新人的祝福與備註';
+                blessingArea.placeholder = '若需要紙本喜帖請附上郵遞區號與地址，也歡迎寫下給我們的祝福...';
+            } else if (mode === 'absent') {
+                relationshipBlock.style.display = 'none';
+                contactBlock.style.display = 'none';
+                attendanceDetailsBlock.style.display = 'none';
+                invitationBlock.style.display = 'none';
+
+                relationshipSelect.required = false;
+                phoneInput.required = false;
+                invitationRadios.forEach(r => r.required = false);
+
+                blessingLabel.innerText = '給新人的祝福與留言（選填）';
+                blessingArea.placeholder = '請寫下給我們的祝福...';
+            }
+        }
+
+        function toggleCustomInput(selectElement, customInputId) {
+            const customInput = document.getElementById(customInputId);
+            if (selectElement.value === '__other__') {
+                customInput.style.display = 'block';
+                customInput.required = true;
+                customInput.focus();
+            } else {
+                customInput.style.display = 'none';
+                customInput.required = false;
+                customInput.value = '';
+            }
+        }
+
+        let isSubmitted = false;
+
+        function handleFormSubmit(event) {
+            const form = document.getElementById('weddingRsvpForm');
+            const pairs = [
+                { selectId: 'entry_847222822', customId: 'custom_adults' },
+                { selectId: 'entry_565339933', customId: 'custom_veg' },
+                { selectId: 'entry_745612', customId: 'custom_chairs' }
+            ];
+
+            pairs.forEach(pair => {
+                const select = document.getElementById(pair.selectId);
+                const custom = document.getElementById(pair.customId);
+
+                if (select && select.value === '__other__' && custom && custom.value.trim() !== '') {
+                    let hiddenInput = document.getElementById('hidden_' + pair.selectId);
+                    if (!hiddenInput) {
+                        hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.id = 'hidden_' + pair.selectId;
+                        form.appendChild(hiddenInput);
+                    }
+                    hiddenInput.name = select.name;
+                    hiddenInput.value = custom.value.trim();
+
+                    select.removeAttribute('name');
+                }
+            });
+
+            isSubmitted = true;
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+            const submitBtn = document.getElementById('submitBtn');
+
+            btnText.innerText = '傳送中...';
+            btnSpinner.classList.remove('hidden');
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-80');
+        }
+
+        function handleIframeLoad() {
+            if (isSubmitted) {
+                const btnText = document.getElementById('btnText');
+                const btnSpinner = document.getElementById('btnSpinner');
+                const submitBtn = document.getElementById('submitBtn');
+
+                btnText.innerText = '確認送出資料';
+                btnSpinner.classList.add('hidden');
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-80');
+
+                showModal();
+
+                document.getElementById('entry_847222822').name = 'entry.847222822';
+                document.getElementById('entry_565339933').name = 'entry.565339933';
+                document.getElementById('entry_745612').name = 'entry.745612';
+
+                document.getElementById('weddingRsvpForm').reset();
+
+                ['relationshipBlock', 'contactBlock', 'attendanceDetailsBlock', 'invitationBlock', 'blessingBlock'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
+
+                ['custom_adults', 'custom_veg', 'custom_chairs'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
+
+                isSubmitted = false;
+            }
+        }
+
+        function showModal() {
+            const modal = document.getElementById('successModal');
+            const content = document.getElementById('modalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('successModal');
+            const content = document.getElementById('modalContent');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    </script>
+</body>
+</html>

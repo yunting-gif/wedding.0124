@@ -61,7 +61,7 @@
             overflow: hidden;
         }
 
-        /* 將 iframe 強制向上向上偏移 -65px，徹底裁剪頂部黑條 */
+        /* 向上位移 -65px 徹底裁切頂部黑邊 */
         .canva-wrapper iframe {
             position: absolute;
             top: -65px !important;
@@ -90,20 +90,13 @@
             box-shadow: 0 20px 40px rgba(181, 148, 106, 0.08);
         }
 
-        /* 放大表單標籤與輸入字體 */
-        .custom-label {
-            font-size: 1.15rem !important;
-            font-weight: 500 !important;
-        }
-
         .custom-input {
             width: 100%;
             background-color: rgba(255, 255, 255, 0.95);
             border: 1px solid #E8DCCB;
-            border-radius: 0.6rem;
-            padding: 0.9rem 1.2rem !important;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
             color: #2C1820;
-            font-size: 1.15rem !important;
             transition: all 0.3s ease;
         }
 
@@ -114,14 +107,10 @@
         }
 
         .dynamic-other-input {
-            margin-top: 0.6rem;
+            margin-top: 0.5rem;
             border: 1px dashed #B5946A;
             background-color: #FAF8F5;
-            font-size: 1.05rem !important;
-        }
-
-        .radio-text {
-            font-size: 1.15rem !important;
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -143,10 +132,10 @@
     </section>
 
     <!-- 2. 中間引導按鈕 -->
-    <div class="text-center py-8 bg-cream">
-        <a href="#rsvp-form-section" class="inline-flex items-center space-x-2 text-champagne-600 hover:text-champagne-700 bg-champagne-100/80 px-7 py-3 rounded-full text-lg font-medium tracking-widest shadow-sm hover:shadow transition-all">
+    <div class="text-center py-6 bg-cream">
+        <a href="#rsvp-form-section" class="inline-flex items-center space-x-2 text-champagne-600 hover:text-champagne-700 bg-champagne-100/80 px-6 py-2.5 rounded-full text-sm font-medium tracking-widest shadow-sm hover:shadow transition-all">
             <span>前往填寫出席回覆</span>
-            <i class="fa-solid fa-arrow-down animate-bounce text-sm"></i>
+            <i class="fa-solid fa-arrow-down animate-bounce text-xs"></i>
         </a>
     </div>
 
@@ -154,10 +143,10 @@
     <main class="w-full max-w-3xl mx-auto px-4">
         <section id="rsvp-form-section" class="glass-card p-6 md:p-10 rounded-3xl shadow-xl border border-champagne-200">
             <div class="text-center mb-8">
-                <span class="font-cursive text-lg tracking-widest text-champagne-500 uppercase block mb-1">RSVP Form</span>
-                <h2 class="text-3xl md:text-4xl font-normal tracking-widest text-darkburgundy">婚禮出席回覆</h2>
-                <p class="text-stone-500 text-base mt-2 font-light">請填寫以下資訊，以便我們為您安排最佳席位</p>
-                <div class="w-14 h-0.5 bg-champagne-300 mx-auto mt-3"></div>
+                <span class="font-cursive text-sm tracking-widest text-champagne-500 uppercase block mb-1">RSVP Form</span>
+                <h2 class="text-2xl md:text-3xl font-normal tracking-widest text-darkburgundy">婚禮出席回覆</h2>
+                <p class="text-stone-500 text-xs md:text-sm mt-2 font-light">請填寫以下資訊，以便我們為您安排最佳席位</p>
+                <div class="w-12 h-0.5 bg-champagne-300 mx-auto mt-3"></div>
             </div>
 
             <form id="weddingRsvpForm" 
@@ -165,11 +154,11 @@
                   method="POST" 
                   target="hidden_iframe" 
                   onsubmit="handleFormSubmit(event)"
-                  class="space-y-7">
+                  class="space-y-6">
 
                 <!-- 1. 姓名 -->
                 <div>
-                    <label class="block custom-label text-darkburgundy mb-2">
+                    <label class="block text-sm font-medium text-darkburgundy mb-2">
                         姓名 <span class="text-rosegold-500">*</span>
                     </label>
                     <input type="text" 
@@ -182,29 +171,28 @@
 
                 <!-- 2. 出席意願 -->
                 <div>
-                    <label class="block custom-label text-darkburgundy mb-2">
+                    <label class="block text-sm font-medium text-darkburgundy mb-2">
                         出席意願 <span class="text-rosegold-500">*</span>
                     </label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" id="attend_yes" name="entry.2112564173" value="當然，一定到!" required onchange="toggleAttendanceMode('attend')" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
-                            <span class="ml-3 radio-text text-stone-700">當然，一定到!</span>
+                        <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
+                            <input type="radio" id="attend_yes" name="entry.2112564173" value="當然，一定到!" required onchange="toggleAttendanceMode('attend')" class="text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-2 text-sm text-stone-700">當然，一定到!</span>
                         </label>
-                        <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" id="attend_no" name="entry.2112564173" value="無法出席，但獻上祝福" required onchange="toggleAttendanceMode('absent')" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
-                            <span class="ml-3 radio-text text-stone-700">無法出席，但獻上祝福</span>
+                        <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
+                            <input type="radio" id="attend_no" name="entry.2112564173" value="無法出席，但獻上祝福" required onchange="toggleAttendanceMode('absent')" class="text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-2 text-sm text-stone-700">無法出席，但獻上祝福</span>
                         </label>
                     </div>
                 </div>
 
-                <!-- 3. 與新人的關係 (點選出席才展開) -->
+                <!-- 3. 與新人的關係 (精簡為 3 個選項) -->
                 <div id="relationshipBlock" style="display: none;">
-                    <label class="block custom-label text-darkburgundy mb-2">
+                    <label class="block text-sm font-medium text-darkburgundy mb-2">
                         與新人的關係 <span id="req_relationship" class="text-rosegold-500">*</span>
                     </label>
                     <select id="entry_383311355" name="entry.383311355" class="custom-input">
                         <option value="" disabled selected>請選擇關係</option>
-                        <option value="筱婷的親友">筱婷的親友</option>
                         <option value="男方親友">男方親友</option>
                         <option value="女方親友">女方親友</option>
                         <option value="共同好友">共同好友</option>
@@ -214,7 +202,7 @@
                 <!-- 4. 電話 & 5. Email (點選出席才展開) -->
                 <div id="contactBlock" class="grid grid-cols-1 md:grid-cols-2 gap-6" style="display: none;">
                     <div>
-                        <label class="block custom-label text-darkburgundy mb-2">
+                        <label class="block text-sm font-medium text-darkburgundy mb-2">
                             聯絡電話 <span id="req_phone" class="text-rosegold-500">*</span>
                         </label>
                         <input type="tel" 
@@ -224,7 +212,7 @@
                                class="custom-input">
                     </div>
                     <div>
-                        <label class="block custom-label text-darkburgundy mb-2">
+                        <label class="block text-sm font-medium text-darkburgundy mb-2">
                             電子信箱
                         </label>
                         <input type="email" 
@@ -238,7 +226,7 @@
                 <!-- 人數配置: 6. 出席人數, 7. 素食人數, 8. 兒童座椅 (點選出席才展開) -->
                 <div id="attendanceDetailsBlock" class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2" style="display: none;">
                     <div>
-                        <label class="block custom-label text-darkburgundy mb-2">
+                        <label class="block text-sm font-medium text-darkburgundy mb-2">
                             出席人數
                         </label>
                         <select id="entry_847222822" name="entry.847222822" onchange="toggleCustomInput(this, 'custom_adults')" class="custom-input">
@@ -253,7 +241,7 @@
                     </div>
 
                     <div>
-                        <label class="block custom-label text-darkburgundy mb-2">
+                        <label class="block text-sm font-medium text-darkburgundy mb-2">
                             素食人數
                         </label>
                         <select id="entry_565339933" name="entry.565339933" onchange="toggleCustomInput(this, 'custom_veg')" class="custom-input">
@@ -267,7 +255,7 @@
                     </div>
 
                     <div>
-                        <label class="block custom-label text-darkburgundy mb-2">
+                        <label class="block text-sm font-medium text-darkburgundy mb-2">
                             兒童座椅數量
                         </label>
                         <select id="entry_745612" name="entry.745612" onchange="toggleCustomInput(this, 'custom_chairs')" class="custom-input">
@@ -282,32 +270,32 @@
 
                 <!-- 9. 喜帖需求 (點選出席才展開) -->
                 <div id="invitationBlock" style="display: none;">
-                    <label class="block custom-label text-darkburgundy mb-2">
+                    <label class="block text-sm font-medium text-darkburgundy mb-2">
                         喜帖需求 <span id="req_invitation" class="text-rosegold-500">*</span>
                     </label>
-                    <div class="space-y-3">
-                        <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" name="entry.471589357" value="需要，電子跟紙本都想要" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
-                            <span class="ml-3 radio-text text-stone-700">需要，電子跟紙本都想要</span>
+                    <div class="space-y-2">
+                        <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
+                            <input type="radio" name="entry.471589357" value="需要，電子跟紙本都想要" class="text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-2 text-sm text-stone-700">需要，電子跟紙本都想要</span>
                         </label>
-                        <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" name="entry.471589357" value="需要，請寄電子喜帖給我" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
-                            <span class="ml-3 radio-text text-stone-700">需要，請寄電子喜帖給我</span>
+                        <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
+                            <input type="radio" name="entry.471589357" value="需要，請寄電子喜帖給我" class="text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-2 text-sm text-stone-700">需要，請寄電子喜帖給我</span>
                         </label>
-                        <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" name="entry.471589357" value="需要，請寄紙本喜帖給我" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
-                            <span class="ml-3 radio-text text-stone-700">需要，請寄紙本喜帖給我</span>
+                        <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
+                            <input type="radio" name="entry.471589357" value="需要，請寄紙本喜帖給我" class="text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-2 text-sm text-stone-700">需要，請寄紙本喜帖給我</span>
                         </label>
-                        <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" name="entry.471589357" value="不用，我已經記起來婚禮資訊了" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
-                            <span class="ml-3 radio-text text-stone-700">不用，我已經記起來婚禮資訊了</span>
+                        <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
+                            <input type="radio" name="entry.471589357" value="不用，我已經記起來婚禮資訊了" class="text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-2 text-sm text-stone-700">不用，我已經記起來婚禮資訊了</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- 10. 地址與祝福留言 (選擇意願後顯示) -->
                 <div id="blessingBlock" style="display: none;">
-                    <label class="block custom-label text-darkburgundy mb-2" id="blessingLabel">
+                    <label class="block text-sm font-medium text-darkburgundy mb-2" id="blessingLabel">
                         寄送地址 / 給新人的祝福與備註
                     </label>
                     <textarea id="entry_380847305"
@@ -318,19 +306,19 @@
                 </div>
 
                 <!-- 提交按鈕 -->
-                <div class="text-center pt-4">
+                <div class="text-center pt-2">
                     <button type="submit" 
                             id="submitBtn" 
-                            class="w-full md:w-auto px-12 py-4 bg-champagne-500 hover:bg-champagne-600 text-white font-medium text-xl rounded-full shadow-lg hover:shadow-xl transition-all tracking-widest flex items-center justify-center mx-auto">
+                            class="w-full md:w-auto px-10 py-3.5 bg-champagne-500 hover:bg-champagne-600 text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all tracking-widest flex items-center justify-center mx-auto">
                         <span id="btnText">確認送出資料</span>
-                        <div id="btnSpinner" class="hidden ml-2 w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <div id="btnSpinner" class="hidden ml-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     </button>
                 </div>
             </form>
         </section>
     </main>
 
-    <footer class="py-8 text-center text-sm text-stone-400 mt-10">
+    <footer class="py-8 text-center text-xs text-stone-400 mt-10">
         <p>© Wedding Invitation & RSVP Form. All Rights Reserved.</p>
     </footer>
 
@@ -341,10 +329,10 @@
                 <i class="fa-solid fa-heart"></i>
             </div>
             <h3 class="text-2xl font-normal text-darkburgundy mb-2 tracking-wider">感謝您的回覆！</h3>
-            <p class="text-stone-600 text-base leading-relaxed mb-6 font-light">
+            <p class="text-stone-600 text-sm leading-relaxed mb-6 font-light">
                 我們已經成功收到您的資訊。<br>非常感謝您的祝福與配合！
             </p>
-            <button onclick="closeModal()" class="px-8 py-2.5 bg-champagne-500 hover:bg-champagne-600 text-white rounded-full text-sm tracking-widest shadow transition-all">
+            <button onclick="closeModal()" class="px-8 py-2.5 bg-champagne-500 hover:bg-champagne-600 text-white rounded-full text-xs tracking-widest shadow transition-all">
                 關閉視窗
             </button>
         </div>

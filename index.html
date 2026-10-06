@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>婚禮邀請函與出席回覆 | Wedding Invitation & RSVP</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+TC:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        champagne: {
+                            50: '#FAF8F5',
+                            100: '#F5EFE6',
+                            200: '#E8DCCB',
+                            300: '#DBC7AF',
+                            400: '#C7AC8B',
+                            500: '#B5946A',
+                            600: '#9B784E',
+                        },
+                        rosegold: {
+                            500: '#C07D83',
+                        },
+                        cream: '#FDFAF6',
+                        darkburgundy: '#2C1820'
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif TC"', 'serif'],
+                        cursive: ['"Cormorant Garamond"', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Noto Serif TC', serif;
+            background-color: #FDFAF6;
+            color: #2C1820;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .canva-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 1097.7306%;
+            background-color: #FDFAF6;
+            overflow: hidden;
+        }
+
+        .canva-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 頂部奶油色遮罩：徹底蓋住最上方的黑邊 */
+        .canva-top-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 45px;
+            background-color: #FDFAF6;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* 底部奶油色遮罩：徹底蓋住最下方的黑邊 */
+        .canva-bottom-cover {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #FDFAF6;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(219, 199, 175, 0.5);
+            box-shadow: 0 20px 40px rgba(181, 148, 106, 0.08);
+        }
+
+        /* 強制放大表單字體與輸入框 */
+        .custom-label {
+            font-size: 1.15rem !important;
+            font-weight: 500 !important;
+        }
+
+        .custom-input {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 1px solid #E8DCCB;
+            border-radius: 0.6rem;
+            padding: 0.9rem 1.2rem !important;
+            color: #2C1820;
+            font-size: 1.15rem !important;
+            transition: all 0.3s ease;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: #B5946A;
+            box-shadow: 0 0 0 3px rgba(181, 148, 106, 0.15);
+        }
+
+        .dynamic-other-input {
+            margin-top: 0.6rem;
+            border: 1px dashed #B5946A;
+            background-color: #FAF8F5;
+            font-size: 1.05rem !important;
+        }
+
+        .radio-text {
+            font-size: 1.15rem !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- 隱藏式 Iframe，用於接收 Google Form 提交結果 -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeLoad()"></iframe>
+
+    <!-- 1. 頂部滿版 Canva 區域 (上下均有奶油色遮罩遮蓋黑邊) -->
+    <section class="w-full relative bg-cream">
+        <div class="canva-wrapper">
+            <!-- 頂部遮罩 -->
+            <div class="canva-top-cover"></div>
+            <iframe loading="lazy"
+                src="https://www.canva.com/design/DAHWBKwxk5o/NzhCkC-29eXAi5pwUNmehg/view?embed" 
+                allowfullscreen="allowfullscreen" 
+                allow="fullscreen">
+            </iframe>
+            <!-- 底部遮罩 -->
+            <div class="canva-bottom-cover"></div>
+        </div>
+    </section>
+
+    <!-- 2. 中間引導按鈕 -->
+    <div class="text-center py-8 bg-cream">
+        <a href="#rsvp-form-section" class="inline-flex items-center space-x-2 text-champagne-600 hover:text-champagne-700 bg-champagne-100/80 px-7 py-3 rounded-full text-lg font-medium tracking-widest shadow-sm hover:shadow transition-all">
+            <span>前往填寫出席回覆</span>
+            <i class="fa-solid fa-arrow-down animate-bounce text-sm"></i>
+        </a>
+    </div>
+
+    <!-- 3. RSVP 婚禮出席回覆表單 -->
+    <main class="w-full max-w-3xl mx-auto px-4">
+        <section id="rsvp-form-section" class="glass-card p-6 md:p-10 rounded-3xl shadow-xl border border-champagne-200">
+            <div class="text-center mb-8">
+                <span class="font-cursive text-lg tracking-widest text-champagne-500 uppercase block mb-1">RSVP Form</span>
+                <h2 class="text-3xl md:text-4xl font-normal tracking-widest text-darkburgundy">婚禮出席回覆</h2>
+                <p class="text-stone-500 text-base mt-2 font-light">請填寫以下資訊，以便我們為您安排最佳席位</p>
+                <div class="w-14 h-0.5 bg-champagne-300 mx-auto mt-3"></div>
+            </div>
+
+            <form id="weddingRsvpForm" 
+                  action="https://docs.google.com/forms/d/e/1FAIpQLSdCKzax5qT-YAVwHjna2Vz3C011ReDAzNSA912Nu1fSOMnK2A/formResponse" 
+                  method="POST" 
+                  target="hidden_iframe" 
+                  onsubmit="handleFormSubmit(event)"
+                  class="space-y-7">
+
+                <!-- 1. 姓名 -->
+                <div>
+                    <label class="block custom-label text-darkburgundy mb-2">
+                        姓名 <span class="text-rosegold-500">*</span>
+                    </label>
+                    <input type="text" 
+                           id="entry_71470779"
+                           name="entry.71470779" 
+                           required 
+                           placeholder="請輸入您的真實姓名" 
+                           class="custom-input">
+                </div>
+
+                <!-- 2. 出席意願 -->
+                <div>
+                    <label class="block custom-label text-darkburgundy mb-2">
+                        出席意願 <span class="text-rosegold-500">*</span>
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
+                            <input type="radio" name="entry.2112564173" value="當然，一定到!" required onchange="toggleAttendanceMode('attend')" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-3 radio-text text-stone-700">當然，一定到!</span>
+                        </label>
+                        <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
+                            <input type="radio" name="entry.2112564173" value="無法出席，但獻上祝福" required onchange="toggleAttendanceMode('absent')" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-3 radio-text text-stone-700">無法出席，但獻上祝福</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 3. 與新人的關係 (點選出席才展開) -->
+                <div id="relationshipBlock" style="display: none;">
+                    <label class="block custom-label text-darkburgundy mb-2">
+                        與新人的關係 <span id="req_relationship" class="text-rosegold-500">*</span>
+                    </label>
+                    <select id="entry_383311355" name="entry.383311355" class="custom-input">
+                        <option value="" disabled selected>請選擇關係</option>
+                        <option value="筱婷的親友">筱婷的親友</option>
+                        <option value="男方親友">男方親友</option>
+                        <option value="女方親友">女方親友</option>
+                        <option value="共同好友">共同好友</option>
+                    </select>
+                </div>
+
+                <!-- 4. 電話 & 5. Email (點選出席才展開) -->
+                <div id="contactBlock" class="grid grid-cols-1 md:grid-cols-2 gap-6" style="display: none;">
+                    <div>
+                        <label class="block custom-label text-darkburgundy mb-2">
+                            聯絡電話 <span id="req_phone" class="text-rosegold-500">*</span>
+                        </label>
+                        <input type="tel" 
+                               id="entry_1185979561"
+                               name="entry.1185979561" 
+                               placeholder="例：0912345678" 
+                               class="custom-input">
+                    </div>
+                    <div>
+                        <label class="block custom-label text-darkburgundy mb-2">
+                            電子信箱
+                        </label>
+                        <input type="email" 
+                               id="entry_1819218719"
+                               name="entry.1819218719" 
+                               placeholder="example@mail.com" 
+                               class="custom-input">
+                    </div>
+                </div>
+
+                <!-- 人數配置: 6. 出席人數, 7. 素食人數, 8. 兒童座椅 (點選出席才展開) -->
+                <div id="attendanceDetailsBlock" class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2" style="display: none;">
+                    <div>
+                        <label class="block custom-label text-darkburgundy mb-2">
+                            出席人數
+                        </label>
+                        <select id="entry_847222822" name="entry.847222822" onchange="toggleCustomInput(this, 'custom_adults')" class="custom-input">
+                            <option value="1位">1位</option>
+                            <option value="2位">2位</option>
+                            <option value="3位">3位</option>
+                            <option value="4位">4位</option>
+                            <option value="5位">5位</option>
+                            <option value="__other__">其它（請自訂人數）</option>
+                        </select>
+                        <input type="text" id="custom_adults" placeholder="請填寫人數（例：6位）" class="custom-input dynamic-other-input" style="display: none;">
+                    </div>
+
+                    <div>
+                        <label class="block custom-label text-darkburgundy mb-2">
+                            素食人數
+                        </label>
+                        <select id="entry_565339933" name="entry.565339933" onchange="toggleCustomInput(this, 'custom_veg')" class="custom-input">
+                            <option value="0">0</option>
+                            <option value="1位">1位</option>
+                            <option value="2位">2位</option>
+                            <option value="3位">3位</option>
+                            <option value="__other__">其它（請自訂人數）</option>
+                        </select>
+                        <input type="text" id="custom_veg" placeholder="請填寫素食人數（例：4位）" class="custom-input dynamic-other-input" style="display: none;">
+                    </div>
+
+                    <div>
+                        <label class="block custom-label text-darkburgundy mb-2">
+                            兒童座椅數量
+                        </label>
+                        <select id="entry_745612" name="entry.745612" onchange="toggleCustomInput(this, 'custom_chairs')" class="custom-input">
+                            <option value="0位">0位</option>
+                            <option value="1位">1位</option>
+                            <option value="2位">2位</option>
+                            <option value="__other__">其它（請自訂張數）</option>
+                        </select>
+                        <input type="text" id="custom_chairs" placeholder="請填寫座椅張數（例：3張）" class="custom-input dynamic-other-input" style="display: none;">
+                    </div>
+                </div>
+
+                <!-- 9. 喜帖需求 (點選出席才展開) -->
+                <div id="invitationBlock" style="display: none;">
+                    <label class="block custom-label text-darkburgundy mb-2">
+                        喜帖需求 <span id="req_invitation" class="text-rosegold-500">*</span>
+                    </label>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
+                            <input type="radio" name="entry.471589357" value="需要，電子跟紙本都想要" class="w-5 h-5 text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-3 radio-text text-stone-700">需要，電子跟紙本都想要</span>
+                        </label>
+                        <label class="flex items-center p-4 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
+                            <

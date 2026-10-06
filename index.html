@@ -182,7 +182,7 @@
                            class="custom-input">
                 </div>
 
-                <!-- 2. 出席意願 -->
+                <!-- 2. 出席意願 (已更正為 Google 表單對應之精確選項文字) -->
                 <div>
                     <label class="block text-sm font-medium text-darkburgundy mb-2">
                         出席意願 <span class="text-rosegold-500">*</span>
@@ -193,13 +193,13 @@
                             <span class="ml-2 text-sm text-stone-700 font-medium">當然，一定到!</span>
                         </label>
                         <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" id="attend_no" name="entry.2112564173" value="無法出席，但獻上祝福" required onchange="toggleAttendanceMode('absent')" onclick="toggleAttendanceMode('absent')" class="w-4 h-4 text-champagne-600 focus:ring-champagne-500">
-                            <span class="ml-2 text-sm text-stone-700 font-medium">無法出席，但獻上祝福</span>
+                            <input type="radio" id="attend_no" name="entry.2112564173" value="無法參加，祝你們幸福!" required onchange="toggleAttendanceMode('absent')" onclick="toggleAttendanceMode('absent')" class="w-4 h-4 text-champagne-600 focus:ring-champagne-500">
+                            <span class="ml-2 text-sm text-stone-700 font-medium">無法參加，祝你們幸福!</span>
                         </label>
                     </div>
                 </div>
 
-                <!-- 3. 與新人的關係 (精簡為 3 個選項) -->
+                <!-- 3. 與新人的關係 (3 個選項) -->
                 <div id="relationshipBlock" style="display: none;">
                     <label class="block text-sm font-medium text-darkburgundy mb-2">
                         與新人的關係 <span class="req-star text-rosegold-500">*</span>
@@ -530,13 +530,3 @@
     </script>
 </body>
 </html>
-```eoc
-```
-
----
-
-### 請複製上方的 `index.html` 覆蓋至 GitHub，並建議依以下步驟測試：
-1. 覆蓋更新 GitHub 檔案後，請等待 **1~2 分鐘** 讓伺服器建置完成。
-2. 用手機 Safari / Chrome 開啟 **「無痕視窗 / 私密瀏覽」**（避免瀏覽器快取的舊程式碼影響）。
-3. 填寫 **姓名**，勾選 **「無法出席，但獻上祝福」**，寫下一句祝福後按「確認送出資料」。
-4. 看到感謝彈窗後，去 Google 表單後台即可看到回覆已成功寫入！

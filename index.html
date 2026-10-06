@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>婚禮邀請函與出席回覆 | Wedding Invitation & RSVP</title>
+    
+    <!-- LINE / FB 社交分享預覽標籤 (Open Graph Tags) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="婚禮邀請函與出席回覆">
+    <meta property="og:description" content="誠摯邀請您參加我們的婚禮，請點擊連結填寫出席回覆。">
+    <meta name="description" content="誠摯邀請您參加我們的婚禮，請點擊連結填寫出席回覆。">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -52,6 +59,7 @@
             overflow-x: hidden;
         }
 
+        /* 滿版外層容器 */
         .canva-wrapper {
             position: relative;
             width: 100%;
@@ -60,13 +68,13 @@
             overflow: hidden;
         }
 
-        /* 向上位移 -55px 徹底裁切頂部黑邊 */
+        /* 向上位移 -65px 徹底裁切頂部黑邊 */
         .canva-wrapper iframe {
             position: absolute;
-            top: -55px !important;
+            top: -65px !important;
             left: 0;
             width: 100%;
-            height: calc(100% + 110px) !important;
+            height: calc(100% + 120px) !important;
             border: none;
         }
 
@@ -131,7 +139,7 @@
     <!-- 隱藏式 Iframe，用於接收 Google Form 提交結果 -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeLoad()"></iframe>
 
-    <!-- 1. 頂部滿版 Canva 區域 (上下黑邊皆已精準遮罩) -->
+    <!-- 1. 頂部滿版 Canva 區域 (黑邊已精準裁切) -->
     <section class="w-full relative bg-cream">
         <div class="canva-wrapper">
             <div class="canva-top-cover"></div>
@@ -182,7 +190,7 @@
                            class="custom-input">
                 </div>
 
-                <!-- 2. 出席意願 (已更正為 Google 表單對應之精確選項文字) -->
+                <!-- 2. 出席意願 -->
                 <div>
                     <label class="block text-sm font-medium text-darkburgundy mb-2">
                         出席意願 <span class="text-rosegold-500">*</span>
@@ -368,18 +376,15 @@
             blessingBlock.style.display = 'block';
 
             if (mode === 'attend') {
-                // 顯示出席詳細區塊
                 relationshipBlock.style.display = 'block';
                 contactBlock.style.display = 'grid';
                 attendanceDetailsBlock.style.display = 'grid';
                 invitationBlock.style.display = 'block';
 
-                // 啟用欄位
                 [relationshipBlock, contactBlock, attendanceDetailsBlock, invitationBlock, blessingBlock].forEach(block => {
                     block.querySelectorAll('input, select, textarea').forEach(el => el.removeAttribute('disabled'));
                 });
 
-                // 設定必填限制
                 relationshipSelect.required = true;
                 phoneInput.required = true;
                 invitationRadios.forEach(r => r.required = true);
@@ -390,13 +395,11 @@
                 blessingArea.placeholder = '若需要紙本喜帖請附上郵遞區號與地址，也歡迎寫下給我們的祝福...';
 
             } else if (mode === 'absent') {
-                // 隱藏不必要的席位與喜帖區塊
                 relationshipBlock.style.display = 'none';
                 contactBlock.style.display = 'none';
                 attendanceDetailsBlock.style.display = 'none';
                 invitationBlock.style.display = 'none';
 
-                // 停用隱藏區塊內的 input，防止瀏覽器 HTML5 驗證報錯或傳送空資料
                 [relationshipBlock, contactBlock, attendanceDetailsBlock, invitationBlock].forEach(block => {
                     block.querySelectorAll('input, select, textarea').forEach(el => {
                         el.removeAttribute('required');
@@ -404,7 +407,6 @@
                     });
                 });
 
-                // 確保祝福欄位啟用
                 blessingBlock.querySelectorAll('input, select, textarea').forEach(el => el.removeAttribute('disabled'));
 
                 relationshipSelect.required = false;
@@ -486,14 +488,12 @@
 
                 showModal();
 
-                // 恢復原欄位屬性
                 document.getElementById('entry_847222822').name = 'entry.847222822';
                 document.getElementById('entry_565339933').name = 'entry.565339933';
                 document.getElementById('entry_745612').name = 'entry.745612';
 
                 document.getElementById('weddingRsvpForm').reset();
 
-                // 重置隱藏與啟用狀態
                 ['relationshipBlock', 'contactBlock', 'attendanceDetailsBlock', 'invitationBlock', 'blessingBlock'].forEach(id => {
                     const el = document.getElementById(id);
                     if (el) el.style.display = 'none';
@@ -530,3 +530,14 @@
     </script>
 </body>
 </html>
+```eoc
+
+### 💡 如何更新與測試 LINE 分享預覽卡片：
+
+1. **更新 GitHub 檔案**：
+   * 複製上方區塊中的所有程式碼，全選貼上覆蓋 GitHub 儲存庫上的 `index.html`。
+
+2. **如何讓 LINE 抓到最新預覽**：
+   * 因為 LINE 會暫存（Cache）舊的連結預覽畫面，更新 `index.html` 後，您在傳送連結時可以在網址後面加上一個小的版本參數，例如：
+     `https://yunting-gif.github.io/wedding.0124/?v=2`
+   * 這樣 LINE 就會強制重新抓取最新的網站資訊，預覽卡片下方的說明就會直接顯示：**「誠摯邀請您參加我們的婚禮，請點擊連結填寫出席回覆。」**，不會再出現亂碼與標記文字了！

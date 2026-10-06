@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>婚禮邀請函與出席回覆 | Wedding Invitation & RSVP</title>
     
-    <!-- LINE / FB 社交分享預覽標籤 (Open Graph Tags) -->
+    <!-- LINE / FB 社交分享預覽卡片設定 (Open Graph Tags) -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="婚禮邀請函與出席回覆">
     <meta property="og:description" content="誠摯邀請您參加我們的婚禮，請點擊連結填寫出席回覆。">
@@ -530,14 +530,3 @@
     </script>
 </body>
 </html>
-```eoc
-
-### 💡 如何更新與測試 LINE 分享預覽卡片：
-
-1. **更新 GitHub 檔案**：
-   * 複製上方區塊中的所有程式碼，全選貼上覆蓋 GitHub 儲存庫上的 `index.html`。
-
-2. **如何讓 LINE 抓到最新預覽**：
-   * 因為 LINE 會暫存（Cache）舊的連結預覽畫面，更新 `index.html` 後，您在傳送連結時可以在網址後面加上一個小的版本參數，例如：
-     `https://yunting-gif.github.io/wedding.0124/?v=2`
-   * 這樣 LINE 就會強制重新抓取最新的網站資訊，預覽卡片下方的說明就會直接顯示：**「誠摯邀請您參加我們的婚禮，請點擊連結填寫出席回覆。」**，不會再出現亂碼與標記文字了！

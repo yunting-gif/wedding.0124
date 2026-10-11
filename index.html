@@ -132,14 +132,38 @@
             background-color: #FAF8F5;
             font-size: 0.875rem;
         }
+
+        /* 音樂控制按鈕轉動動畫 */
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .animate-spin-slow {
+            animation: spinSlow 4s linear infinite;
+        }
     </style>
 </head>
 <body class="min-h-screen pb-12">
 
+    <!-- 隱藏式 YouTube 播放器容器 (背景播放陶喆 - 就是愛你) -->
+    <div style="position: fixed; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; z-index: -1;">
+        <div id="ytplayer"></div>
+    </div>
+
+    <!-- 右下角懸浮音樂開關按鈕 -->
+    <button id="musicToggleBtn" 
+            onclick="toggleMusic()" 
+            aria-label="播放/暫停背景音樂（陶喆 - 就是愛你）"
+            title="播放/暫停背景音樂"
+            class="fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full glass-card border border-champagne-300 shadow-xl flex items-center justify-center text-champagne-600 hover:text-champagne-700 transition-all hover:scale-110 active:scale-95">
+        <i id="musicIcon" class="fa-solid fa-music text-lg"></i>
+    </button>
+
     <!-- 隱藏式 Iframe，用於接收 Google Form 提交結果 -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeLoad()"></iframe>
 
-    <!-- 1. 頂部滿版 Canva 區域 (黑邊已精準裁切) -->
+    <!-- 1. 頂部滿版 Canva 區域 -->
     <section class="w-full relative bg-cream">
         <div class="canva-wrapper">
             <div class="canva-top-cover"></div>
@@ -359,7 +383,78 @@
         </div>
     </div>
 
+    <!-- YouTube IFrame Player API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
     <script>
+        // YouTube 背景音樂控制器 (陶喆 - 就是愛你, Video ID: WVaOxR0ajw4)
+        var ytPlayer;
+        var isPlayerReady = false;
+        var isMusicPlaying = false;
+
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('ytplayer', {
+                height: '1',
+                width: '1',
+                videoId: 'WVaOxR0ajw4',
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'loop': 1,
+                    'playlist': 'WVaOxR0ajw4',
+                    'modestbranding': 1,
+                    'rel': 0
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            isPlayerReady = true;
+        }
+
+        function toggleMusic() {
+            if (!isPlayerReady || !ytPlayer) return;
+
+            const musicIcon = document.getElementById('musicIcon');
+            const musicToggleBtn = document.getElementById('musicToggleBtn');
+
+            if (isMusicPlaying) {
+                ytPlayer.pauseVideo();
+                musicIcon.classList.remove('animate-spin-slow');
+                musicToggleBtn.classList.remove('bg-champagne-100', 'border-champagne-400');
+                isMusicPlaying = false;
+            } else {
+                ytPlayer.playVideo();
+                musicIcon.classList.add('animate-spin-slow');
+                musicToggleBtn.classList.add('bg-champagne-100', 'border-champagne-400');
+                isMusicPlaying = true;
+            }
+        }
+
+        // 賓客點擊畫面任意處時自動啟動音樂
+        function autoStartMusic() {
+            if (!isMusicPlaying && isPlayerReady && ytPlayer) {
+                ytPlayer.playVideo();
+                const musicIcon = document.getElementById('musicIcon');
+                const musicToggleBtn = document.getElementById('musicToggleBtn');
+                if (musicIcon && musicToggleBtn) {
+                    musicIcon.classList.add('animate-spin-slow');
+                    musicToggleBtn.classList.add('bg-champagne-100', 'border-champagne-400');
+                }
+                isMusicPlaying = true;
+            }
+            document.removeEventListener('click', autoStartMusic);
+            document.removeEventListener('touchstart', autoStartMusic);
+        }
+
+        document.addEventListener('click', autoStartMusic);
+        document.addEventListener('touchstart', autoStartMusic);
+
         function toggleAttendanceMode(mode) {
             const relationshipBlock = document.getElementById('relationshipBlock');
             const contactBlock = document.getElementById('contactBlock');

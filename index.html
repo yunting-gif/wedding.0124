@@ -58,7 +58,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 高清版 Canva 容器 (不拉伸、保持清晰度) */
+        /* 高清版 Canva 容器 */
         .canva-wrapper {
             position: relative;
             width: 100%;
@@ -67,20 +67,31 @@
             overflow: hidden;
         }
 
+        /* 電腦端預設渲染 */
         .canva-wrapper iframe {
             position: absolute;
-            top: 0;
+            top: -65px !important;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: calc(100% + 120px) !important;
             border: none;
-            /* 啟用高清硬體加速 */
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             transform: translateZ(0);
         }
 
-        /* 頂部與底部遮罩 (無失真覆蓋黑條) */
+        /* 手機端高畫質渲染：雙倍視口渲染 + 0.5倍等比縮放 */
+        @media (max-width: 768px) {
+            .canva-wrapper iframe {
+                width: 200% !important;
+                height: calc(200% + 240px) !important;
+                top: -130px !important;
+                transform: scale(0.5);
+                transform-origin: 0 0;
+            }
+        }
+
+        /* 頂部與底部遮罩 */
         .canva-top-cover {
             position: absolute;
             top: 0;
@@ -126,24 +137,6 @@
             box-shadow: 0 0 0 3px rgba(181, 148, 106, 0.15);
         }
 
-        /* 精簡底線數值輸入框風格 */
-        .line-number-input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1.5px solid #DBC7AF;
-            border-radius: 0;
-            padding: 0.5rem 0.25rem;
-            color: #2C1820;
-            font-size: 1.125rem;
-            transition: all 0.3s ease;
-        }
-
-        .line-number-input:focus {
-            outline: none;
-            border-bottom-color: #B5946A;
-        }
-
         /* 移除原生數值鍵盤輸入框預設箭頭 */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
@@ -160,7 +153,7 @@
     <!-- 隱藏式 Iframe，用於接收 Google Form 提交結果 -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeLoad()"></iframe>
 
-    <!-- 1. 頂部滿版 Canva 區域 (高清適配版) -->
+    <!-- 1. 頂部滿版 Canva 區域 (高清渲染) -->
     <section class="w-full relative bg-cream">
         <div class="canva-wrapper">
             <div class="canva-top-cover"></div>
@@ -265,7 +258,7 @@
                     </div>
                 </div>
 
-                <!-- 人數配置: 6. 出席人數, 7. 素食人數, 8. 兒童座椅 (帶手機加減按鈕風格) -->
+                <!-- 人數配置: 6. 出席人數, 7. 素食人數, 8. 兒童座椅 (帶加減微調按鈕) -->
                 <div id="attendanceDetailsBlock" class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2" style="display: none;">
                     <!-- 出席人數 -->
                     <div>
@@ -405,7 +398,6 @@
     </div>
 
     <script>
-        // 手機與電腦通用的數值微調函數 (+ / -)
         function adjustCount(inputId, delta, minVal) {
             const input = document.getElementById(inputId);
             if (!input) return;
@@ -520,6 +512,3 @@
     </script>
 </body>
 </html>
-```
-
-已為您輸出乾淨完整的 HTML 程式碼！請點擊右上方 **Copy** 按鈕全選複製，並確保在 GitHub 上的檔案名稱為 `index.html`。

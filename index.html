@@ -138,18 +138,6 @@
     <!-- 隱藏式 Iframe，用於接收 Google Form 提交結果 -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeLoad()"></iframe>
 
-    <!-- 隱藏的背景音樂 YouTube 播放器 -->
-    <div id="youtube-player-container" style="position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; pointer-events: none;">
-        <div id="yt-player"></div>
-    </div>
-
-    <!-- 右下角音樂播放切換按鈕 -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <button id="musicToggleBtn" onclick="toggleMusic()" class="w-12 h-12 rounded-full bg-champagne-500 hover:bg-champagne-600 text-white shadow-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 focus:outline-none" title="播放 / 暫停背景音樂">
-            <i id="musicIcon" class="fa-solid fa-music animate-spin" style="animation-duration: 4s;"></i>
-        </button>
-    </div>
-
     <!-- 1. 頂部滿版 Canva 區域 -->
     <section class="w-full relative bg-cream">
         <div class="canva-wrapper">
@@ -165,7 +153,7 @@
 
     <!-- 2. 中間引導按鈕 -->
     <div class="text-center py-6 bg-cream">
-        <a href="#rsvp-form-section" onclick="tryPlayMusic()" class="inline-flex items-center space-x-2 text-champagne-600 hover:text-champagne-700 bg-champagne-100/80 px-6 py-2.5 rounded-full text-sm font-medium tracking-widest shadow-sm hover:shadow transition-all">
+        <a href="#rsvp-form-section" class="inline-flex items-center space-x-2 text-champagne-600 hover:text-champagne-700 bg-champagne-100/80 px-6 py-2.5 rounded-full text-sm font-medium tracking-widest shadow-sm hover:shadow transition-all">
             <span>前往填寫出席回覆</span>
             <i class="fa-solid fa-arrow-down animate-bounce text-xs"></i>
         </a>
@@ -394,74 +382,7 @@
         </div>
     </div>
 
-    <!-- YouTube Iframe API 載入 -->
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        let ytPlayer;
-        let isPlaying = false;
-
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('yt-player', {
-                videoId: 'WVaOxR0ajw4', // 陶喆《就是愛你》官方 MV
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': 'WVaOxR0ajw4',
-                    'playsinline': 1
-                },
-                events: {
-                    'onReady': onPlayerReady
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            document.addEventListener('click', autoPlayOnce, { once: true });
-            document.addEventListener('touchstart', autoPlayOnce, { once: true });
-        }
-
-        function autoPlayOnce() {
-            if (ytPlayer && typeof ytPlayer.playVideo === 'function' && !isPlaying) {
-                ytPlayer.playVideo();
-                isPlaying = true;
-                updateMusicIcon();
-            }
-        }
-
-        function tryPlayMusic() {
-            if (ytPlayer && typeof ytPlayer.playVideo === 'function' && !isPlaying) {
-                ytPlayer.playVideo();
-                isPlaying = true;
-                updateMusicIcon();
-            }
-        }
-
-        function toggleMusic() {
-            if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
-            
-            if (isPlaying) {
-                ytPlayer.pauseVideo();
-                isPlaying = false;
-            } else {
-                ytPlayer.playVideo();
-                isPlaying = true;
-            }
-            updateMusicIcon();
-        }
-
-        function updateMusicIcon() {
-            const icon = document.getElementById('musicIcon');
-            const btn = document.getElementById('musicToggleBtn');
-            if (isPlaying) {
-                icon.className = 'fa-solid fa-music animate-spin';
-                btn.classList.remove('opacity-60');
-            } else {
-                icon.className = 'fa-solid fa-pause';
-                btn.classList.add('opacity-60');
-            }
-        }
-
         // 手機與電腦通用的數值微調函數 (+ / -)
         function adjustCount(inputId, delta, minVal) {
             const input = document.getElementById(inputId);

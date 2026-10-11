@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>婚禮邀請函與出席回覆 | Wedding Invitation & RSVP</title>
-    <!-- Open Graph 分享預覽標籤 (LINE / 微信 / FB) -->
-    <meta property="og:title" content="婚禮邀請函與出席回覆 | Wedding Invitation & RSVP">
-    <meta property="og:description" content="誠摯邀請您參加我們的婚禮，請點擊連結填寫出席回覆。">
-    <meta property="og:type" content="website">
     
+    <!-- LINE / FB 社交分享預覽卡片設定 (Open Graph Tags) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="婚禮邀請函與出席回覆">
+    <meta property="og:description" content="誠摯邀請您參加我們的婚禮，請點擊連結填寫出席回覆。">
+    <meta name="description" content="誠摯邀請您參加我們的婚禮，請點擊連結填寫出席回覆。">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -55,10 +57,9 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* 高清版 Canva 容器 */
+        /* 滿版外層容器 */
         .canva-wrapper {
             position: relative;
             width: 100%;
@@ -67,7 +68,7 @@
             overflow: hidden;
         }
 
-        /* 電腦端預設渲染 */
+        /* 向上位移 -65px 徹底裁切頂部黑邊 */
         .canva-wrapper iframe {
             position: absolute;
             top: -65px !important;
@@ -75,40 +76,27 @@
             width: 100%;
             height: calc(100% + 120px) !important;
             border: none;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            transform: translateZ(0);
         }
 
-        /* 手機端高畫質渲染：雙倍視口渲染 + 0.5倍等比縮放 */
-        @media (max-width: 768px) {
-            .canva-wrapper iframe {
-                width: 200% !important;
-                height: calc(200% + 240px) !important;
-                top: -130px !important;
-                transform: scale(0.5);
-                transform-origin: 0 0;
-            }
-        }
-
-        /* 頂部與底部遮罩 */
+        /* 頂部奶油色遮罩蓋住頂欄黑條 */
         .canva-top-cover {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 48px;
+            height: 45px;
             background-color: #FDFAF6;
             z-index: 10;
             pointer-events: none;
         }
 
+        /* 底部奶油色遮罩蓋住底欄黑條 */
         .canva-bottom-cover {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 56px;
+            height: 60px;
             background-color: #FDFAF6;
             z-index: 10;
             pointer-events: none;
@@ -128,6 +116,7 @@
             border-radius: 0.5rem;
             padding: 0.75rem 1rem;
             color: #2C1820;
+            font-size: 0.95rem;
             transition: all 0.3s ease;
         }
 
@@ -137,14 +126,11 @@
             box-shadow: 0 0 0 3px rgba(181, 148, 106, 0.15);
         }
 
-        /* 移除原生數值鍵盤輸入框預設箭頭 */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
+        .dynamic-other-input {
+            margin-top: 0.5rem;
+            border: 1px dashed #B5946A;
+            background-color: #FAF8F5;
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -153,7 +139,7 @@
     <!-- 隱藏式 Iframe，用於接收 Google Form 提交結果 -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeLoad()"></iframe>
 
-    <!-- 1. 頂部滿版 Canva 區域 (高清渲染) -->
+    <!-- 1. 頂部滿版 Canva 區域 (黑邊已精準裁切) -->
     <section class="w-full relative bg-cream">
         <div class="canva-wrapper">
             <div class="canva-top-cover"></div>
@@ -211,20 +197,20 @@
                     </label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" id="attend_yes" name="entry.2112564173" value="當然，一定到!" required onchange="toggleAttendanceMode('attend')" class="text-champagne-600 focus:ring-champagne-500">
+                            <input type="radio" id="attend_yes" name="entry.2112564173" value="當然，一定到!" required onchange="toggleAttendanceMode('attend')" onclick="toggleAttendanceMode('attend')" class="w-4 h-4 text-champagne-600 focus:ring-champagne-500">
                             <span class="ml-2 text-sm text-stone-700 font-medium">當然，一定到!</span>
                         </label>
                         <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" id="attend_no" name="entry.2112564173" value="無法參加，祝你們幸福!" required onchange="toggleAttendanceMode('absent')" class="text-champagne-600 focus:ring-champagne-500">
+                            <input type="radio" id="attend_no" name="entry.2112564173" value="無法參加，祝你們幸福!" required onchange="toggleAttendanceMode('absent')" onclick="toggleAttendanceMode('absent')" class="w-4 h-4 text-champagne-600 focus:ring-champagne-500">
                             <span class="ml-2 text-sm text-stone-700 font-medium">無法參加，祝你們幸福!</span>
                         </label>
                     </div>
                 </div>
 
-                <!-- 3. 與新人的關係 -->
+                <!-- 3. 與新人的關係 (3 個選項) -->
                 <div id="relationshipBlock" style="display: none;">
                     <label class="block text-sm font-medium text-darkburgundy mb-2">
-                        與新人的關係 <span id="req_relationship" class="text-rosegold-500">*</span>
+                        與新人的關係 <span class="req-star text-rosegold-500">*</span>
                     </label>
                     <select id="entry_383311355" name="entry.383311355" class="custom-input">
                         <option value="" disabled selected>請選擇關係</option>
@@ -234,11 +220,11 @@
                     </select>
                 </div>
 
-                <!-- 4. 電話 & 5. Email (點選出席才展開) -->
+                <!-- 4. 電話 & 5. Email -->
                 <div id="contactBlock" class="grid grid-cols-1 md:grid-cols-2 gap-6" style="display: none;">
                     <div>
                         <label class="block text-sm font-medium text-darkburgundy mb-2">
-                            聯絡電話 <span id="req_phone" class="text-rosegold-500">*</span>
+                            聯絡電話 <span class="req-star text-rosegold-500">*</span>
                         </label>
                         <input type="tel" 
                                id="entry_1185979561"
@@ -258,95 +244,71 @@
                     </div>
                 </div>
 
-                <!-- 人數配置: 6. 出席人數, 7. 素食人數, 8. 兒童座椅 (帶加減微調按鈕) -->
-                <div id="attendanceDetailsBlock" class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2" style="display: none;">
-                    <!-- 出席人數 -->
+                <!-- 人數配置: 6. 出席人數, 7. 素食人數, 8. 兒童座椅 -->
+                <div id="attendanceDetailsBlock" class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2" style="display: none;">
                     <div>
                         <label class="block text-sm font-medium text-darkburgundy mb-2">
-                            出席人數 <span class="font-cursive text-xs text-champagne-500 ml-1 uppercase">Guests</span>
+                            出席人數
                         </label>
-                        <div class="flex items-center border-b-2 border-champagne-300 pb-1">
-                            <button type="button" onclick="adjustCount('entry_847222822', -1, 1)" class="w-8 h-8 rounded-full bg-champagne-100 hover:bg-champagne-200 text-champagne-700 font-bold flex items-center justify-center transition-colors focus:outline-none active:scale-95">
-                                <i class="fa-solid fa-minus text-xs"></i>
-                            </button>
-                            <input type="number" 
-                                   id="entry_847222822" 
-                                   name="entry.847222822" 
-                                   min="1" 
-                                   max="20" 
-                                   value="1" 
-                                   class="w-full text-center bg-transparent border-none text-lg font-medium text-darkburgundy focus:outline-none px-2">
-                            <button type="button" onclick="adjustCount('entry_847222822', 1, 1)" class="w-8 h-8 rounded-full bg-champagne-100 hover:bg-champagne-200 text-champagne-700 font-bold flex items-center justify-center transition-colors focus:outline-none active:scale-95">
-                                <i class="fa-solid fa-plus text-xs"></i>
-                            </button>
-                        </div>
+                        <select id="entry_847222822" name="entry.847222822" onchange="toggleCustomInput(this, 'custom_adults')" class="custom-input">
+                            <option value="1位">1位</option>
+                            <option value="2位">2位</option>
+                            <option value="3位">3位</option>
+                            <option value="4位">4位</option>
+                            <option value="5位">5位</option>
+                            <option value="__other__">其它（請自訂人數）</option>
+                        </select>
+                        <input type="text" id="custom_adults" placeholder="請填寫人數（例：6位）" class="custom-input dynamic-other-input" style="display: none;">
                     </div>
 
-                    <!-- 素食人數 -->
                     <div>
                         <label class="block text-sm font-medium text-darkburgundy mb-2">
-                            素食人數 <span class="font-cursive text-xs text-champagne-500 ml-1 uppercase">Vegetarian</span>
+                            素食人數
                         </label>
-                        <div class="flex items-center border-b-2 border-champagne-300 pb-1">
-                            <button type="button" onclick="adjustCount('entry_565339933', -1, 0)" class="w-8 h-8 rounded-full bg-champagne-100 hover:bg-champagne-200 text-champagne-700 font-bold flex items-center justify-center transition-colors focus:outline-none active:scale-95">
-                                <i class="fa-solid fa-minus text-xs"></i>
-                            </button>
-                            <input type="number" 
-                                   id="entry_565339933" 
-                                   name="entry.565339933" 
-                                   min="0" 
-                                   max="20" 
-                                   value="0" 
-                                   class="w-full text-center bg-transparent border-none text-lg font-medium text-darkburgundy focus:outline-none px-2">
-                            <button type="button" onclick="adjustCount('entry_565339933', 1, 0)" class="w-8 h-8 rounded-full bg-champagne-100 hover:bg-champagne-200 text-champagne-700 font-bold flex items-center justify-center transition-colors focus:outline-none active:scale-95">
-                                <i class="fa-solid fa-plus text-xs"></i>
-                            </button>
-                        </div>
+                        <select id="entry_565339933" name="entry.565339933" onchange="toggleCustomInput(this, 'custom_veg')" class="custom-input">
+                            <option value="0">0</option>
+                            <option value="1位">1位</option>
+                            <option value="2位">2位</option>
+                            <option value="3位">3位</option>
+                            <option value="__other__">其它（請自訂人數）</option>
+                        </select>
+                        <input type="text" id="custom_veg" placeholder="請填寫素食人數（例：4位）" class="custom-input dynamic-other-input" style="display: none;">
                     </div>
 
-                    <!-- 兒童座椅數量 -->
                     <div>
                         <label class="block text-sm font-medium text-darkburgundy mb-2">
-                            兒童座椅數量 <span class="font-cursive text-xs text-champagne-500 ml-1 uppercase">High Chairs</span>
+                            兒童座椅數量
                         </label>
-                        <div class="flex items-center border-b-2 border-champagne-300 pb-1">
-                            <button type="button" onclick="adjustCount('entry_745612', -1, 0)" class="w-8 h-8 rounded-full bg-champagne-100 hover:bg-champagne-200 text-champagne-700 font-bold flex items-center justify-center transition-colors focus:outline-none active:scale-95">
-                                <i class="fa-solid fa-minus text-xs"></i>
-                            </button>
-                            <input type="number" 
-                                   id="entry_745612" 
-                                   name="entry.745612" 
-                                   min="0" 
-                                   max="10" 
-                                   value="0" 
-                                   class="w-full text-center bg-transparent border-none text-lg font-medium text-darkburgundy focus:outline-none px-2">
-                            <button type="button" onclick="adjustCount('entry_745612', 1, 0)" class="w-8 h-8 rounded-full bg-champagne-100 hover:bg-champagne-200 text-champagne-700 font-bold flex items-center justify-center transition-colors focus:outline-none active:scale-95">
-                                <i class="fa-solid fa-plus text-xs"></i>
-                            </button>
-                        </div>
+                        <select id="entry_745612" name="entry.745612" onchange="toggleCustomInput(this, 'custom_chairs')" class="custom-input">
+                            <option value="0位">0位</option>
+                            <option value="1位">1位</option>
+                            <option value="2位">2位</option>
+                            <option value="__other__">其它（請自訂張數）</option>
+                        </select>
+                        <input type="text" id="custom_chairs" placeholder="請填寫座椅張數（例：3張）" class="custom-input dynamic-other-input" style="display: none;">
                     </div>
                 </div>
 
                 <!-- 9. 喜帖需求 -->
                 <div id="invitationBlock" style="display: none;">
                     <label class="block text-sm font-medium text-darkburgundy mb-2">
-                        喜帖需求 <span id="req_invitation" class="text-rosegold-500">*</span>
+                        喜帖需求 <span class="req-star text-rosegold-500">*</span>
                     </label>
                     <div class="space-y-2">
                         <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" name="entry.471589357" value="需要，電子跟紙本都想要" class="text-champagne-600 focus:ring-champagne-500">
+                            <input type="radio" name="entry.471589357" value="需要，電子跟紙本都想要" class="w-4 h-4 text-champagne-600 focus:ring-champagne-500">
                             <span class="ml-2 text-sm text-stone-700">需要，電子跟紙本都想要</span>
                         </label>
                         <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" name="entry.471589357" value="需要，請寄電子喜帖給我" class="text-champagne-600 focus:ring-champagne-500">
+                            <input type="radio" name="entry.471589357" value="需要，請寄電子喜帖給我" class="w-4 h-4 text-champagne-600 focus:ring-champagne-500">
                             <span class="ml-2 text-sm text-stone-700">需要，請寄電子喜帖給我</span>
                         </label>
                         <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" name="entry.471589357" value="需要，請寄紙本喜帖給我" class="text-champagne-600 focus:ring-champagne-500">
+                            <input type="radio" name="entry.471589357" value="需要，請寄紙本喜帖給我" class="w-4 h-4 text-champagne-600 focus:ring-champagne-500">
                             <span class="ml-2 text-sm text-stone-700">需要，請寄紙本喜帖給我</span>
                         </label>
                         <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
-                            <input type="radio" name="entry.471589357" value="不用，我已經記起來婚禮資訊了" class="text-champagne-600 focus:ring-champagne-500">
+                            <input type="radio" name="entry.471589357" value="不用，我已經記起來婚禮資訊了" class="w-4 h-4 text-champagne-600 focus:ring-champagne-500">
                             <span class="ml-2 text-sm text-stone-700">不用，我已經記起來婚禮資訊了</span>
                         </label>
                     </div>
@@ -398,18 +360,6 @@
     </div>
 
     <script>
-        function adjustCount(inputId, delta, minVal) {
-            const input = document.getElementById(inputId);
-            if (!input) return;
-            let val = parseInt(input.value, 10);
-            if (isNaN(val)) val = minVal;
-            val += delta;
-            if (val < minVal) val = minVal;
-            const maxVal = parseInt(input.max, 10);
-            if (!isNaN(maxVal) && val > maxVal) val = maxVal;
-            input.value = val;
-        }
-
         function toggleAttendanceMode(mode) {
             const relationshipBlock = document.getElementById('relationshipBlock');
             const contactBlock = document.getElementById('contactBlock');
@@ -431,30 +381,89 @@
                 attendanceDetailsBlock.style.display = 'grid';
                 invitationBlock.style.display = 'block';
 
+                [relationshipBlock, contactBlock, attendanceDetailsBlock, invitationBlock, blessingBlock].forEach(block => {
+                    block.querySelectorAll('input, select, textarea').forEach(el => el.removeAttribute('disabled'));
+                });
+
                 relationshipSelect.required = true;
                 phoneInput.required = true;
                 invitationRadios.forEach(r => r.required = true);
 
+                document.querySelectorAll('.req-star').forEach(el => el.style.display = 'inline');
+
                 blessingLabel.innerText = '寄送地址 / 給新人的祝福與備註';
                 blessingArea.placeholder = '若需要紙本喜帖請附上郵遞區號與地址，也歡迎寫下給我們的祝福...';
+
             } else if (mode === 'absent') {
                 relationshipBlock.style.display = 'none';
                 contactBlock.style.display = 'none';
                 attendanceDetailsBlock.style.display = 'none';
                 invitationBlock.style.display = 'none';
 
+                [relationshipBlock, contactBlock, attendanceDetailsBlock, invitationBlock].forEach(block => {
+                    block.querySelectorAll('input, select, textarea').forEach(el => {
+                        el.removeAttribute('required');
+                        el.setAttribute('disabled', 'disabled');
+                    });
+                });
+
+                blessingBlock.querySelectorAll('input, select, textarea').forEach(el => el.removeAttribute('disabled'));
+
                 relationshipSelect.required = false;
                 phoneInput.required = false;
                 invitationRadios.forEach(r => r.required = false);
+
+                document.querySelectorAll('.req-star').forEach(el => el.style.display = 'none');
 
                 blessingLabel.innerText = '給新人的祝福與留言（選填）';
                 blessingArea.placeholder = '請寫下給我們的祝福...';
             }
         }
 
+        function toggleCustomInput(selectElement, customInputId) {
+            const customInput = document.getElementById(customInputId);
+            if (selectElement.value === '__other__') {
+                customInput.style.display = 'block';
+                customInput.required = true;
+                customInput.removeAttribute('disabled');
+                customInput.focus();
+            } else {
+                customInput.style.display = 'none';
+                customInput.required = false;
+                customInput.setAttribute('disabled', 'disabled');
+                customInput.value = '';
+            }
+        }
+
         let isSubmitted = false;
 
         function handleFormSubmit(event) {
+            const form = document.getElementById('weddingRsvpForm');
+            const pairs = [
+                { selectId: 'entry_847222822', customId: 'custom_adults' },
+                { selectId: 'entry_565339933', customId: 'custom_veg' },
+                { selectId: 'entry_745612', customId: 'custom_chairs' }
+            ];
+
+            pairs.forEach(pair => {
+                const select = document.getElementById(pair.selectId);
+                const custom = document.getElementById(pair.customId);
+
+                if (select && !select.disabled && select.value === '__other__' && custom && custom.value.trim() !== '') {
+                    let hiddenInput = document.getElementById('hidden_' + pair.selectId);
+                    if (!hiddenInput) {
+                        hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.id = 'hidden_' + pair.selectId;
+                        form.appendChild(hiddenInput);
+                    }
+                    hiddenInput.name = select.name;
+                    hiddenInput.value = custom.value.trim();
+
+                    select.removeAttribute('name');
+                }
+            });
+
             isSubmitted = true;
             const btnText = document.getElementById('btnText');
             const btnSpinner = document.getElementById('btnSpinner');
@@ -479,9 +488,18 @@
 
                 showModal();
 
+                document.getElementById('entry_847222822').name = 'entry.847222822';
+                document.getElementById('entry_565339933').name = 'entry.565339933';
+                document.getElementById('entry_745612').name = 'entry.745612';
+
                 document.getElementById('weddingRsvpForm').reset();
 
                 ['relationshipBlock', 'contactBlock', 'attendanceDetailsBlock', 'invitationBlock', 'blessingBlock'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
+
+                ['custom_adults', 'custom_veg', 'custom_chairs'].forEach(id => {
                     const el = document.getElementById(id);
                     if (el) el.style.display = 'none';
                 });

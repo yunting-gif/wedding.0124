@@ -55,9 +55,10 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* 滿版外層容器 */
+        /* 高清版 Canva 容器 (不拉伸、保持清晰度) */
         .canva-wrapper {
             position: relative;
             width: 100%;
@@ -66,23 +67,26 @@
             overflow: hidden;
         }
 
-        /* 向上位移 -65px 徹底裁切頂部黑邊 */
         .canva-wrapper iframe {
             position: absolute;
-            top: -65px !important;
+            top: 0;
             left: 0;
             width: 100%;
-            height: calc(100% + 120px) !important;
+            height: 100%;
             border: none;
+            /* 啟用高清硬體加速 */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: translateZ(0);
         }
 
-        /* 頂部與底部奶油色遮罩 */
+        /* 頂部與底部遮罩 (無失真覆蓋黑條) */
         .canva-top-cover {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 40px;
+            height: 48px;
             background-color: #FDFAF6;
             z-index: 10;
             pointer-events: none;
@@ -93,7 +97,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 60px;
+            height: 56px;
             background-color: #FDFAF6;
             z-index: 10;
             pointer-events: none;
@@ -122,6 +126,24 @@
             box-shadow: 0 0 0 3px rgba(181, 148, 106, 0.15);
         }
 
+        /* 精簡底線數值輸入框風格 */
+        .line-number-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1.5px solid #DBC7AF;
+            border-radius: 0;
+            padding: 0.5rem 0.25rem;
+            color: #2C1820;
+            font-size: 1.125rem;
+            transition: all 0.3s ease;
+        }
+
+        .line-number-input:focus {
+            outline: none;
+            border-bottom-color: #B5946A;
+        }
+
         /* 移除原生數值鍵盤輸入框預設箭頭 */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
@@ -138,7 +160,7 @@
     <!-- 隱藏式 Iframe，用於接收 Google Form 提交結果 -->
     <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleIframeLoad()"></iframe>
 
-    <!-- 1. 頂部滿版 Canva 區域 -->
+    <!-- 1. 頂部滿版 Canva 區域 (高清適配版) -->
     <section class="w-full relative bg-cream">
         <div class="canva-wrapper">
             <div class="canva-top-cover"></div>
@@ -498,3 +520,6 @@
     </script>
 </body>
 </html>
+```
+
+已為您輸出乾淨完整的 HTML 程式碼！請點擊右上方 **Copy** 按鈕全選複製，並確保在 GitHub 上的檔案名稱為 `index.html`。

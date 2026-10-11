@@ -122,22 +122,14 @@
             box-shadow: 0 0 0 3px rgba(181, 148, 106, 0.15);
         }
 
-        /* 精簡底線數值輸入框風格 (圖片樣式) */
-        .line-number-input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1.5px solid #DBC7AF;
-            border-radius: 0;
-            padding: 0.5rem 0.25rem;
-            color: #2C1820;
-            font-size: 1.125rem;
-            transition: all 0.3s ease;
+        /* 移除原生數值鍵盤輸入框預設箭頭，使用我們客製的按鈕 */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none;
+            margin: 0;
         }
-
-        .line-number-input:focus {
-            outline: none;
-            border-bottom-color: #B5946A;
+        input[type=number] {
+            -moz-appearance: textfield;
         }
     </style>
 </head>
@@ -217,11 +209,11 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
                             <input type="radio" id="attend_yes" name="entry.2112564173" value="當然，一定到!" required onchange="toggleAttendanceMode('attend')" class="text-champagne-600 focus:ring-champagne-500">
-                            <span class="ml-2 text-sm text-stone-700">當然，一定到!</span>
+                            <span class="ml-2 text-sm text-stone-700 font-medium">當然，一定到!</span>
                         </label>
                         <label class="flex items-center p-3 border border-champagne-200 rounded-lg bg-white/70 cursor-pointer hover:border-champagne-400 transition-colors">
                             <input type="radio" id="attend_no" name="entry.2112564173" value="無法參加，祝你們幸福!" required onchange="toggleAttendanceMode('absent')" class="text-champagne-600 focus:ring-champagne-500">
-                            <span class="ml-2 text-sm text-stone-700">無法參加，祝你們幸福!</span>
+                            <span class="ml-2 text-sm text-stone-700 font-medium">無法參加，祝你們幸福!</span>
                         </label>
                     </div>
                 </div>
@@ -263,45 +255,72 @@
                     </div>
                 </div>
 
-                <!-- 人數配置: 6. 出席人數, 7. 素食人數, 8. 兒童座椅 (底線數字簡答題風格) -->
+                <!-- 人數配置: 6. 出席人數, 7. 素食人數, 8. 兒童座椅 (帶手機加減按鈕風格) -->
                 <div id="attendanceDetailsBlock" class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2" style="display: none;">
+                    <!-- 出席人數 -->
                     <div>
-                        <label class="block text-sm font-medium text-darkburgundy mb-1">
+                        <label class="block text-sm font-medium text-darkburgundy mb-2">
                             出席人數 <span class="font-cursive text-xs text-champagne-500 ml-1 uppercase">Guests</span>
                         </label>
-                        <input type="number" 
-                               id="entry_847222822" 
-                               name="entry.847222822" 
-                               min="1" 
-                               max="20" 
-                               value="1" 
-                               class="line-number-input">
+                        <div class="flex items-center border-b-2 border-champagne-300 pb-1">
+                            <button type="button" onclick="adjustCount('entry_847222822', -1, 1)" class="w-8 h-8 rounded-full bg-champagne-100 hover:bg-champagne-200 text-champagne-700 font-bold flex items-center justify-center transition-colors focus:outline-none active:scale-95">
+                                <i class="fa-solid fa-minus text-xs"></i>
+                            </button>
+                            <input type="number" 
+                                   id="entry_847222822" 
+                                   name="entry.847222822" 
+                                   min="1" 
+                                   max="20" 
+                                   value="1" 
+                                   class="w-full text-center bg-transparent border-none text-lg font-medium text-darkburgundy focus:outline-none px-2">
+                            <button type="button" onclick="adjustCount('entry_847222822', 1, 1)" class="w-8 h-8 rounded-full bg-champagne-100 hover:bg-champagne-200 text-champagne-700 font-bold flex items-center justify-center transition-colors focus:outline-none active:scale-95">
+                                <i class="fa-solid fa-plus text-xs"></i>
+                            </button>
+                        </div>
                     </div>
 
+                    <!-- 素食人數 -->
                     <div>
-                        <label class="block text-sm font-medium text-darkburgundy mb-1">
+                        <label class="block text-sm font-medium text-darkburgundy mb-2">
                             素食人數 <span class="font-cursive text-xs text-champagne-500 ml-1 uppercase">Vegetarian</span>
                         </label>
-                        <input type="number" 
-                               id="entry_565339933" 
-                               name="entry.565339933" 
-                               min="0" 
-                               max="20" 
-                               value="0" 
-                               class="line-number-input">
+                        <div class="flex items-center border-b-2 border-champagne-300 pb-1">
+                            <button type="button" onclick="adjustCount('entry_565339933', -1, 0)" class="w-8 h-8 rounded-full bg-champagne-100 hover:bg-champagne-200 text-champagne-700 font-bold flex items-center justify-center transition-colors focus:outline-none active:scale-95">
+                                <i class="fa-solid fa-minus text-xs"></i>
+                            </button>
+                            <input type="number" 
+                                   id="entry_565339933" 
+                                   name="entry.565339933" 
+                                   min="0" 
+                                   max="20" 
+                                   value="0" 
+                                   class="w-full text-center bg-transparent border-none text-lg font-medium text-darkburgundy focus:outline-none px-2">
+                            <button type="button" onclick="adjustCount('entry_565339933', 1, 0)" class="w-8 h-8 rounded-full bg-champagne-100 hover:bg-champagne-200 text-champagne-700 font-bold flex items-center justify-center transition-colors focus:outline-none active:scale-95">
+                                <i class="fa-solid fa-plus text-xs"></i>
+                            </button>
+                        </div>
                     </div>
 
+                    <!-- 兒童座椅數量 -->
                     <div>
-                        <label class="block text-sm font-medium text-darkburgundy mb-1">
+                        <label class="block text-sm font-medium text-darkburgundy mb-2">
                             兒童座椅數量 <span class="font-cursive text-xs text-champagne-500 ml-1 uppercase">High Chairs</span>
                         </label>
-                        <input type="number" 
-                               id="entry_745612" 
-                               name="entry.745612" 
-                               min="0" 
-                               max="10" 
-                               value="0" 
-                               class="line-number-input">
+                        <div class="flex items-center border-b-2 border-champagne-300 pb-1">
+                            <button type="button" onclick="adjustCount('entry_745612', -1, 0)" class="w-8 h-8 rounded-full bg-champagne-100 hover:bg-champagne-200 text-champagne-700 font-bold flex items-center justify-center transition-colors focus:outline-none active:scale-95">
+                                <i class="fa-solid fa-minus text-xs"></i>
+                            </button>
+                            <input type="number" 
+                                   id="entry_745612" 
+                                   name="entry.745612" 
+                                   min="0" 
+                                   max="10" 
+                                   value="0" 
+                                   class="w-full text-center bg-transparent border-none text-lg font-medium text-darkburgundy focus:outline-none px-2">
+                            <button type="button" onclick="adjustCount('entry_745612', 1, 0)" class="w-8 h-8 rounded-full bg-champagne-100 hover:bg-champagne-200 text-champagne-700 font-bold flex items-center justify-center transition-colors focus:outline-none active:scale-95">
+                                <i class="fa-solid fa-plus text-xs"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -443,6 +462,19 @@
             }
         }
 
+        // 手機與電腦通用的數值微調函數 (+ / -)
+        function adjustCount(inputId, delta, minVal) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            let val = parseInt(input.value, 10);
+            if (isNaN(val)) val = minVal;
+            val += delta;
+            if (val < minVal) val = minVal;
+            const maxVal = parseInt(input.max, 10);
+            if (!isNaN(maxVal) && val > maxVal) val = maxVal;
+            input.value = val;
+        }
+
         function toggleAttendanceMode(mode) {
             const relationshipBlock = document.getElementById('relationshipBlock');
             const contactBlock = document.getElementById('contactBlock');
@@ -545,3 +577,11 @@
     </script>
 </body>
 </html>
+```eoc
+
+### 🌟 更新內容亮點：
+1. **跨裝置友好的微調按鈕 (`-` / `+`)**：不管是用 iPhone、Android 手機還是電腦開網頁，人數欄位旁邊都有圓形金香檳色按鈕，點一下就可以順暢加減人數！
+2. **保留鍵盤打字功能**：賓客點擊中間數字依然可以喚起手機數字鍵盤直接輸入大數字。
+3. **保持資料 100% 寫入**：輸入框直接輸出數字，傳送到 Google 表單簡答題中完全相符。
+
+請複製這份新版 `index.html` 覆蓋至 GitHub 儲存庫即可！
